@@ -8,3 +8,5 @@ npm-debug.log
 /*.env
 /node_modules
 local_database_dump.sql
+spd-schema.sql
+spd.sql
