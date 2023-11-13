@@ -9,4 +9,4 @@ npm-debug.log
 /node_modules
 local_database_dump.sql
 spd-schema.sql
-spd.sql
+spd-script.sql

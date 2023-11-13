@@ -19,6 +19,9 @@ app.use(express.json());
 app.use(authenticateJWT);
 
 app.use("/auth", authRoutes);
+app.get("/", (req, res, next) => {
+    res.send('hello')
+})
 
 /** Handle 404 errors -- this matches everything */
 app.use(function (req, res, next) {
