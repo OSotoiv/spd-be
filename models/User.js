@@ -19,19 +19,30 @@ class User {
      **/
 
     static async authenticate(username, password) {
-        const validUser = SECRET_KEY === username;
+        //get user from data base
+        const user = await db.query(
+            `SELECT username, password, is_admin AS "isAdmin" FROM tech WHERE username = $1`,
+            [username]
+        )
         // compare hashed password to a new hash from password
-        const validPassword = await bcrypt.compare(password, HASHED_WORD);
-
-        if (validUser === true && validPassword === true) {
-            return { username }
+        const tech = user.rows[0];
+        if (!tech) {
+            throw new NotFoundError();
+        }
+        const validPassword = await bcrypt.compare(password, tech.password);
+        if (validPassword) {
+            delete tech.password;
+            return tech;
         }
         throw new UnauthorizedError('inside auth');
     }
 
     static async userExist(username) {
-        //would usually check the database here but for sake of simplicity I have a hardcoded SECRET_KEY
-        return username === SECRET_KEY
+        const user = await db.query(`SELECT * FROM tech WHERE username = $1`, [username]);
+        if (user.rows[0]) {
+            return true;
+        }
+        return false;
     }
 
     static async register(username, password) {
@@ -42,7 +53,7 @@ class User {
            WHERE username = $1`,
             [username],
         );
-
+        //check if username already exist
         if (duplicateCheck.rows[0]) {
             throw new BadRequestError(`Duplicate username: ${username}`);
         }
@@ -54,7 +65,7 @@ class User {
            (username,
             password)
            VALUES ($1, $2)
-           RETURNING username`,
+           RETURNING username, is_admin AS isAdmin`,
             [
                 username,
                 hashedPassword

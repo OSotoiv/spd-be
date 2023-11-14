@@ -19,7 +19,8 @@ CREATE TABLE instrument (
 CREATE TABLE tech (
     id SERIAL PRIMARY KEY,
     username VARCHAR(20) NOT NULL,
-    password TEXT NOT NULL
+    password TEXT NOT NULL, 
+    is_admin BOOLEAN NOT NULL DEFAULT FALSE
 );
 
 CREATE TABLE tech_instruments (

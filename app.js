@@ -20,6 +20,7 @@ app.use(authenticateJWT);
 
 app.use("/auth", authRoutes);
 app.get("/", (req, res, next) => {
+    console.log(res.locals.user)
     res.send('hello')
 })
 

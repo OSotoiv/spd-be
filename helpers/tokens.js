@@ -7,7 +7,7 @@ function createToken(user) {
     // const expiresIn = 10;
     let payload = {
         username: user.username,
-        isAdmin: true
+        isAdmin: user.isAdmin || false
     };
 
     // return jwt.sign(payload, SECRET_KEY, { expiresIn });
